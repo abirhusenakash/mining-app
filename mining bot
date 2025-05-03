@@ -1,0 +1,69 @@
+Python-এর জন্য
+pip install monero-python base58 qrcode
+from monero.seed import Seed
+
+def recover_wallet_from_seed(seed_phrase):
+    try:
+        seed = Seed(seed_phrase)
+        print("[✅] ওয়ালেট সফলভাবে রিকভার করা হয়েছে!")
+        print(f"Address: {seed.public_address()}")
+        print(f"Private Spend Key: {seed.secret_spend_key()}")
+        print(f"Private View Key: {seed.secret_view_key()}")
+    except Exception as e:
+        print(f"[❌] Error: {e}")
+
+Example Usage
+user_seed = input("আপনার 25-শব্দের Seed Phrase লিখুন: ")
+recover_wallet_from_seed(user_seed)
+from monero.wallet import Wallet
+
+def recover_from_keys_file(file_path, password=None):
+    try:
+        wallet = Wallet(file_path, password)
+        print("[✅] ওয়ালেট ফাইল থেকে রিকভারি সফল!")
+        print(f"Address: {wallet.address()}")
+        print(f"Balance: {wallet.balance()} XMR")
+    except Exception as e:
+        print(f"[❌] Error: {e}")
+
+Example Usage
+recover_from_keys_file("/path/to/wallet.keys", "your_password")
+from monero.address import address
+
+def recover_from_private_keys(private_spend_key, private_view_key):
+    try:
+        addr = address(private_spend_key=private_spend_key, private_view_key=private_view_key)
+        print(f"Recovered Address: {addr}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+ Example Usage
+recover_from_private_keys("YOUR_PRIVATE_SPEND_KEY", "YOUR_PRIVATE_VIEW_KEY")
+import tkinter as tk
+from monero.seed import Seed
+
+def recover_wallet():
+    seed_phrase = entry.get()
+    try:
+        seed = Seed(seed_phrase)
+        result_label.config(text=f"Address: {seed.public_address()}")
+    except Exception as e:
+        result_label.config(text=f"Error: {e}")
+
+ GUI Setup
+root = tk.Tk()
+root.title("Monero Wallet Recovery Tool")
+
+label = tk.Label(root, text="Enter Seed Phrase:")
+label.pack()
+
+entry = tk.Entry(root, width=50)
+entry.pack()
+
+button = tk.Button(root, text="Recover Wallet", command=recover_wallet)
+button.pack()
+
+result_label = tk.Label(root, text="")
+result_label.pack()
+
+root.mainloop()
